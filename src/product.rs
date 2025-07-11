@@ -13,7 +13,7 @@ pub struct Product {
     wholesale: Decimal,
     img_url: String,
     msrp: Decimal,
-    map: Decimal,
+    imap: Decimal,
 }
 
 impl Default for Product {
@@ -30,7 +30,7 @@ impl Product {
     /// * `img_url` - "about:blank"
     /// * `wholesale` - $0.00
     /// * `msrp` - $0.00
-    /// * `map` - $0.00
+    /// * `imap` - $0.00
     pub fn new() -> Self {
         Self {
             ean13: Ean13::default(),
@@ -39,7 +39,7 @@ impl Product {
             img_url: String::from("about:blank"),
             wholesale: Decimal::zero(),
             msrp: Decimal::zero(),
-            map: Decimal::zero(),
+            imap: Decimal::zero(),
         }
     }
 
@@ -81,8 +81,8 @@ impl Product {
         Self { msrp, ..self }
     }
 
-    pub fn map(self, map: Decimal) -> Self {
-        Self { map, ..self }
+    pub fn imap(self, imap: Decimal) -> Self {
+        Self { imap, ..self }
     }
 
     pub fn wholesale(self, wholesale: Decimal) -> Self {
@@ -109,8 +109,8 @@ impl Product {
         self.msrp
     }
 
-    pub fn get_map(&self) -> Decimal {
-        self.map
+    pub fn get_imap(&self) -> Decimal {
+        self.imap
     }
 
     pub fn get_wholesale(&self) -> Decimal {
