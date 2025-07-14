@@ -1458,12 +1458,13 @@ checksum = "accd4ea62f7bb7a82fe23066fb0957d48ef677f6eeb8215f372f52e48bb32426"
 
 [[package]]
 name = "vendor-controller"
-version = "0.3.0"
+version = "0.4.0"
 dependencies = [
  "ean13",
  "fantoccini",
  "rust_decimal",
  "serde",
+ "serde_json",
 ]
 
 [[package]]
