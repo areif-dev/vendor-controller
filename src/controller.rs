@@ -1,9 +1,11 @@
 use ean13::Ean13;
+use fantoccini::{Locator, error::CmdError};
+use rust_decimal::{Decimal, prelude::Zero};
 
 use crate::{ChromeClient, Product};
 
 pub trait VendorController {
-    fn client(&self) -> ChromeClient;
+    fn client(&self) -> &ChromeClient;
 
     fn login(&self) -> impl std::future::Future<Output = Result<(), fantoccini::error::CmdError>>;
 
