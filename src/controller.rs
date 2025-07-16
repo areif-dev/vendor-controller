@@ -1,6 +1,6 @@
 use ean13::Ean13;
 use fantoccini::{Locator, error::CmdError};
-use rust_decimal::{Decimal, prelude::Zero};
+use rust_decimal::Decimal;
 
 use crate::{ChromeClient, Product};
 
