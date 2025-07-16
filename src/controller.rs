@@ -51,4 +51,18 @@ pub trait VendorController {
         &self,
         ean: Ean13,
     ) -> impl std::future::Future<Output = Result<Option<Product>, fantoccini::error::CmdError>>;
+
+    async fn price_from_elem<'a>(&self, search: Locator<'a>) -> Result<Decimal, CmdError> {
+        let price_elem = self.client().client.find(search).await?;
+        let mut price_str: String = price_elem.prop("value").await?.unwrap_or(String::new());
+        if price_str == String::new() {
+            price_str = price_elem.text().await.unwrap_or(String::new());
+        }
+        price_str = price_str
+            .chars()
+            .filter(|c| c.is_digit(10) || *c == '.')
+            .collect();
+        println!("{}", price_str);
+        Ok(Decimal::from_str_exact(&price_str).unwrap_or(Decimal::zero()))
+    }
 }
