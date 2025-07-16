@@ -84,7 +84,21 @@ pub trait VendorController {
         ean: Ean13,
     ) -> impl std::future::Future<Output = Result<Option<Product>, fantoccini::error::CmdError>>;
 
-    async fn price_from_elem<'a>(&self, search: Locator<'a>) -> Result<Decimal, CmdError> {
+    /// Attempt to read the text of an element on screen and parse a [`Decimal`] value from it.
+    ///
+    /// # Arguments
+    ///
+    /// * `search` - The [`Locator`] to use that selects the element to parse.
+    ///
+    /// # Returns
+    ///
+    /// If the searched element contains a parsible [`Decimal`], returns Some([`Decimal`]). If the
+    /// element does not contain a parsible [`Decimal`], returns `None`.
+    ///
+    /// # Errors
+    ///
+    /// Forwards any [`fantoccini::error::CmdError`]s that arise
+    async fn price_from_elem<'a>(&self, search: Locator<'a>) -> Result<Option<Decimal>, CmdError> {
         let price_elem = self.client().client.find(search).await?;
         let mut price_str: String = price_elem.prop("value").await?.unwrap_or(String::new());
         if price_str == String::new() {
@@ -95,6 +109,9 @@ pub trait VendorController {
             .filter(|c| c.is_digit(10) || *c == '.')
             .collect();
         println!("{}", price_str);
-        Ok(Decimal::from_str_exact(&price_str).unwrap_or(Decimal::zero()))
+        let Ok(val) = Decimal::from_str_exact(&price_str) else {
+            return Ok(None);
+        };
+        Ok(Some(val))
     }
 }
