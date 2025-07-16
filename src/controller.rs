@@ -5,14 +5,31 @@ use rust_decimal::{Decimal, prelude::Zero};
 use crate::{ChromeClient, Product};
 
 pub trait VendorController {
+    /// Get a shared reference to this [`VendorController`]'s [`ChromeClient`]. This is useful for
+    /// writing custom actions that need to interact with the underlying chromedriver
     fn client(&self) -> &ChromeClient;
 
+    /// The default URL where this vendor's login UI exists. For example
+    /// `String::from("https://www.vendor.com")`
     fn base_url() -> String;
 
+    /// Fetch the username for logging into this vendor
     fn get_user(&self) -> String;
 
+    /// Fetch the password for logging into this vendor
     fn get_passwd(&self) -> String;
 
+    /// Navigate this vendor's website to login to your account. A default implementation is
+    /// provided that attempts to look for username and password fields on the page associated with
+    /// [`VendorController::base_url`]
+    ///
+    /// # Returns
+    ///
+    /// Unit type is returned if successful
+    ///
+    /// # Errors
+    ///
+    /// Forwards any [`fantoccini::error::CmdError`] that arises during the login attempt
     async fn login(&self) -> Result<(), fantoccini::error::CmdError> {
         self.client().client.goto(&Self::base_url()).await?;
         let login_form_elem = self.client().client.find(Locator::Css("form")).await?;
@@ -47,6 +64,21 @@ pub trait VendorController {
         Ok(())
     }
 
+    /// Navigate the vendor's online catalog to fetch product information for a particular [`Ean13`] or UPC.
+    ///
+    /// # Arguments
+    ///
+    /// * `ean` - The unique barcode/upc/ean-13 that belongs to the product to search for
+    ///
+    /// # Returns
+    ///
+    /// If no errors occur, and the product exists in the catalog, then returns Some([`Product`]).
+    /// If the product is not in the catalog, or is not identified by the specified [`Ean13`],
+    /// then returns `None`
+    ///
+    /// # Errors
+    ///
+    /// Forwards any [`fantoccini::error::CmdError`]s that arise
     fn product_from_ean(
         &self,
         ean: Ean13,
