@@ -7,6 +7,12 @@ use crate::{ChromeClient, Product};
 pub trait VendorController {
     fn client(&self) -> &ChromeClient;
 
+    fn base_url() -> String;
+
+    fn get_user(&self) -> String;
+
+    fn get_passwd(&self) -> String;
+
     async fn login(&self) -> Result<(), fantoccini::error::CmdError> {
         self.client().client.goto(&Self::base_url()).await?;
         let login_form_elem = self.client().client.find(Locator::Css("form")).await?;
