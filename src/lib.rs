@@ -8,8 +8,8 @@ pub use product::Product;
 use serde_json::Map;
 
 pub struct ChromeClient {
-    client: fantoccini::Client,
-    wait_at_most: Duration,
+    pub client: fantoccini::Client,
+    pub wait_at_most: Duration,
 }
 
 impl ChromeClient {

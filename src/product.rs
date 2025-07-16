@@ -5,7 +5,7 @@ use serde::{Deserialize, Serialize};
 /// Stores all pertinent details about a product listing from a vendor website including minimum
 /// advertized price, manufacturer suggested retail, images, skus, descriptions, wholesales, and
 /// EAN-13 code
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, PartialEq)]
 pub struct Product {
     ean13: Ean13,
     desc: String,
