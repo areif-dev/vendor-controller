@@ -50,5 +50,5 @@ pub trait VendorController {
     fn product_from_ean(
         &self,
         ean: Ean13,
-    ) -> impl std::future::Future<Output = Result<Product, fantoccini::error::CmdError>>;
+    ) -> impl std::future::Future<Output = Result<Option<Product>, fantoccini::error::CmdError>>;
 }
