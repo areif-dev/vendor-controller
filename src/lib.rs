@@ -7,6 +7,7 @@ pub use controller::VendorController;
 pub use product::Product;
 use serde_json::Map;
 
+#[derive(Debug)]
 pub struct ChromeClient {
     pub client: fantoccini::Client,
     pub wait_at_most: Duration,
