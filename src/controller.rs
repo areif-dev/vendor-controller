@@ -122,7 +122,6 @@ pub trait VendorController {
                 .chars()
                 .filter(|c| c.is_digit(10) || *c == '.')
                 .collect();
-            println!("{}", price_str);
             let Ok(val) = Decimal::from_str_exact(&price_str) else {
                 return Ok(None);
             };
