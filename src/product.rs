@@ -1,13 +1,13 @@
-use ean13::Ean13;
+use gtin::Gtin;
 use rust_decimal::{Decimal, prelude::Zero};
 use serde::{Deserialize, Serialize};
 
 /// Stores all pertinent details about a product listing from a vendor website including minimum
 /// advertized price, manufacturer suggested retail, images, skus, descriptions, wholesales, and
-/// EAN-13 code
+/// GTIN code
 #[derive(Debug, Serialize, Deserialize, PartialEq)]
 pub struct Product {
-    ean13: Ean13,
+    gtin: Gtin,
     desc: String,
     sku: String,
     wholesale: Decimal,
@@ -24,7 +24,7 @@ impl Default for Product {
 
 impl Product {
     /// Create a simple [`Product`] with sensible defaults. Specific values will be
-    /// * `ean13` - 000000000000
+    /// * `gtin` - 000000000000
     /// * `desc` - null string
     /// * `sku` - null string
     /// * `img_url` - "about:blank"
@@ -33,7 +33,7 @@ impl Product {
     /// * `imap` - $0.00
     pub fn new() -> Self {
         Self {
-            ean13: Ean13::default(),
+            gtin: Gtin::nonstrict_new(""),
             desc: String::new(),
             sku: String::new(),
             img_url: String::from("about:blank"),
@@ -43,8 +43,8 @@ impl Product {
         }
     }
 
-    pub fn ean13(self, ean13: Ean13) -> Self {
-        Self { ean13, ..self }
+    pub fn gtin(self, gtin: Gtin) -> Self {
+        Self { gtin, ..self }
     }
 
     pub fn desc<S>(self, desc: S) -> Self
@@ -89,8 +89,8 @@ impl Product {
         Self { wholesale, ..self }
     }
 
-    pub fn get_ean13(&self) -> Ean13 {
-        self.ean13.clone()
+    pub fn get_gtin(&self) -> Gtin {
+        self.gtin.clone()
     }
 
     pub fn get_desc(&self) -> String {

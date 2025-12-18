@@ -1,10 +1,10 @@
 [package]
 name = "vendor-controller"
-version = "0.5.1"
+version = "1.0.0"
 edition = "2024"
 
 [dependencies]
-ean13 = { git = "https://github.com/areif-dev/ean13", version = "0.4.0" }
+gtin = { git = "https://github.com/areif-dev/gtin", version = "1.0.0" }
 fantoccini = "0.22.0"
 rust_decimal = "1.37.2"
 serde = { version = "1.0.219", features = ["derive"] }

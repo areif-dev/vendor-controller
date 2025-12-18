@@ -1,5 +1,5 @@
-use ean13::Ean13;
 use fantoccini::{Locator, error::CmdError};
+use gtin::Gtin;
 use rust_decimal::Decimal;
 
 use crate::{ChromeClient, Product};
@@ -71,24 +71,24 @@ pub trait VendorController {
         }
     }
 
-    /// Navigate the vendor's online catalog to fetch product information for a particular [`Ean13`] or UPC.
+    /// Navigate the vendor's online catalog to fetch product information for a particular [`Gtin`] or UPC.
     ///
     /// # Arguments
     ///
-    /// * `ean` - The unique barcode/upc/ean-13 that belongs to the product to search for
+    /// * `gtin` - The unique barcode/upc/gtin that belongs to the product to search for
     ///
     /// # Returns
     ///
     /// If no errors occur, and the product exists in the catalog, then returns Some([`Product`]).
-    /// If the product is not in the catalog, or is not identified by the specified [`Ean13`],
+    /// If the product is not in the catalog, or is not identified by the specified [`Gtin`],
     /// then returns `None`
     ///
     /// # Errors
     ///
     /// Forwards any [`fantoccini::error::CmdError`]s that arise
-    fn product_from_ean(
+    fn product_from_gtin(
         &self,
-        ean: Ean13,
+        gtin: Gtin,
     ) -> impl std::future::Future<Output = Result<Option<Product>, fantoccini::error::CmdError>>;
 
     /// Attempt to read the text of an element on screen and parse a [`Decimal`] value from it.
