@@ -1,10 +1,11 @@
-mod controller;
-mod product;
+pub mod controller;
+pub mod product;
 
 use std::time::Duration;
 
 pub use controller::VendorController;
 pub use product::Product;
+pub use product::parse_price_nonstrict;
 use serde_json::Map;
 
 #[derive(Debug)]

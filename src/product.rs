@@ -2,6 +2,25 @@ use gtin::Gtin;
 use rust_decimal::{Decimal, prelude::Zero};
 use serde::{Deserialize, Serialize};
 
+/// Filters out any characters that aren't decimal digits or '-' or '.' and attempts to build a
+/// [`Decimal`] from the remainder
+///
+/// # Arguments
+/// - `raw` The unfiltered string to attempt converting into [`Decimal`]
+///
+/// # Returns
+/// A [`Decimal`] parsed from the filtered string
+///
+/// # Errors
+/// [`rust_decimal::Error`] if even the filtered string cannot be parsed into a [`Decimal`]
+pub fn parse_price_nonstrict(raw: &str) -> Result<Decimal, rust_decimal::Error> {
+    let s: String = raw
+        .chars()
+        .filter(|c| c.is_digit(10) || *c == '.' || *c == '-')
+        .collect();
+    Decimal::from_str_exact(&s)
+}
+
 /// Stores all pertinent details about a product listing from a vendor website including minimum
 /// advertized price, manufacturer suggested retail, images, skus, descriptions, wholesales, and
 /// GTIN code
