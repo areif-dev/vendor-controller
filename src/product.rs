@@ -1,3 +1,5 @@
+use std::collections::HashMap;
+
 use gtin::Gtin;
 use rust_decimal::{Decimal, prelude::Zero};
 use serde::{Deserialize, Serialize};
@@ -33,6 +35,8 @@ pub struct Product {
     img_url: String,
     msrp: Decimal,
     imap: Decimal,
+    alts: Vec<String>,
+    misc: HashMap<String, String>,
 }
 
 impl Default for Product {
@@ -50,6 +54,8 @@ impl Product {
     /// * `wholesale` - $0.00
     /// * `msrp` - $0.00
     /// * `imap` - $0.00
+    /// * `alts` - []
+    /// * `misc` - {}
     pub fn new() -> Self {
         Self {
             gtin: Gtin::nonstrict_new(""),
@@ -59,7 +65,21 @@ impl Product {
             wholesale: Decimal::zero(),
             msrp: Decimal::zero(),
             imap: Decimal::zero(),
+            alts: Vec::new(),
+            misc: HashMap::new(),
         }
+    }
+
+    pub fn add_misc_prop(self, k: &str, v: &str) -> Self {
+        let mut misc = self.misc.clone();
+        misc.insert(k.to_string(), v.to_string());
+        Self { misc, ..self }
+    }
+
+    pub fn add_alt(self, alt: &str) -> Self {
+        let mut alts = self.alts.clone();
+        alts.push(alt.to_string());
+        Self { alts, ..self }
     }
 
     pub fn gtin(self, gtin: Gtin) -> Self {
@@ -134,5 +154,13 @@ impl Product {
 
     pub fn get_wholesale(&self) -> Decimal {
         self.wholesale
+    }
+
+    pub fn get_alts(&self) -> Vec<String> {
+        self.alts.clone()
+    }
+
+    pub fn get_misc(&self) -> HashMap<String, String> {
+        self.misc.clone()
     }
 }
