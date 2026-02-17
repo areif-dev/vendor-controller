@@ -26,7 +26,7 @@ pub fn parse_price_nonstrict(raw: &str) -> Result<Decimal, rust_decimal::Error> 
 /// Stores all pertinent details about a product listing from a vendor website including minimum
 /// advertized price, manufacturer suggested retail, images, skus, descriptions, wholesales, and
 /// GTIN code
-#[derive(Debug, Serialize, Deserialize, PartialEq)]
+#[derive(Debug, Serialize, Deserialize, PartialEq, Clone)]
 pub struct Product {
     gtin: Gtin,
     desc: String,
