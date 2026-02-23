@@ -1,4 +1,4 @@
-use std::collections::HashMap;
+use std::collections::{HashMap, HashSet};
 
 use gtin::Gtin;
 use rust_decimal::{Decimal, prelude::Zero};
@@ -35,7 +35,7 @@ pub struct Product {
     img_url: String,
     msrp: Decimal,
     imap: Decimal,
-    alts: Vec<String>,
+    alts: HashSet<String>,
     misc: HashMap<String, String>,
 }
 
@@ -65,7 +65,7 @@ impl Product {
             wholesale: Decimal::zero(),
             msrp: Decimal::zero(),
             imap: Decimal::zero(),
-            alts: Vec::new(),
+            alts: HashSet::new(),
             misc: HashMap::new(),
         }
     }
@@ -78,7 +78,7 @@ impl Product {
 
     pub fn add_alt(self, alt: &str) -> Self {
         let mut alts = self.alts.clone();
-        alts.push(alt.to_string());
+        alts.insert(alt.to_string());
         Self { alts, ..self }
     }
 
@@ -156,7 +156,7 @@ impl Product {
         self.wholesale
     }
 
-    pub fn get_alts(&self) -> Vec<String> {
+    pub fn get_alts(&self) -> HashSet<String> {
         self.alts.clone()
     }
 
